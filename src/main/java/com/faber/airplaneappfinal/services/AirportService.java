@@ -25,7 +25,7 @@ public class AirportService {
     public Airport findAirportById(int id){
         return airportRepository.getOne(id);
     }
-    public Airport createOrUpdateNewAirport(Airport airport){
+    public Airport createOrUpdateAirport(Airport airport){
         if(airport.getId()==null){
             airport = airportRepository.save(airport);
             return airport;
@@ -54,6 +54,16 @@ public class AirportService {
         Optional<Airport> airportOptional = airportRepository.findById(id);
         if(airportOptional.isPresent()){
             return airportOptional.get();
+        }
+        else{
+            throw new RecordNotFoundException("No airport record exist for given id");
+        }
+    }
+    
+    public void deleteEmployeeById(Integer id) throws RecordNotFoundException{
+        Optional<Airport> airportOptional = airportRepository.findById(id);
+        if(airportOptional.isPresent()){
+            airportRepository.deleteById(id);
         }
         else{
             throw new RecordNotFoundException("No airport record exist for given id");

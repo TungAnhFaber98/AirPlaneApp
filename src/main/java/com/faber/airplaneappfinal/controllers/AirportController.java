@@ -35,11 +35,11 @@ public class AirportController {
 
     @PostMapping("/create")
     public String createAirport(Airport airport) {
-        airportService.createOrUpdateNewAirport(airport);
+        airportService.createOrUpdateAirport(airport);
         return "redirect:/airport/all";
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = {"/all","/"})
     public String findAll(Model model) {
         ArrayList<Airport> airports = (ArrayList<Airport>) airportService.findAll();
         model.addAttribute("airports", airports);
@@ -59,5 +59,14 @@ public class AirportController {
         }
         return "airport/add-edit";
     }
+    
+    @RequestMapping(path="/delete/{id}")
+    public String deleteEmployeeById(Model model,@PathVariable("id")Integer id)
+            throws RecordNotFoundException{
+        airportService.deleteEmployeeById(id);
+        return "redirect:/airport/";
+    }
+    
+    
 
 }
