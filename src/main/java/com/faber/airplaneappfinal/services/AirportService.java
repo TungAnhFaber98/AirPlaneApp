@@ -8,9 +8,14 @@ package com.faber.airplaneappfinal.services;
 import com.faber.airplaneappfinal.entities.Airport;
 import com.faber.airplaneappfinal.exception.RecordNotFoundException;
 import com.faber.airplaneappfinal.repositories.AirportRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +26,26 @@ import org.springframework.stereotype.Service;
 public class AirportService {
     @Autowired
     AirportRepository airportRepository;
+    
+    public Page<Airport> findPaginated(Pageable pageable){
+        
+        List<Airport> airports = airportRepository.findAll();
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        
+        List<Airport> list;
+        if(airports.size() < startItem){
+            list = Collections.emptyList();
+        }
+        else{
+            int toIndex = Math.min(startItem + pageSize,airports.size());
+            list = airports.subList(startItem, toIndex);
+        }
+        Page<Airport> airportPage = new  PageImpl<Airport>(list,PageRequest.of(currentPage, pageSize),airports.size());
+        return airportPage;
+    }
+    
     
     public Airport findAirportById(int id){
         return airportRepository.getOne(id);
@@ -60,7 +85,7 @@ public class AirportService {
         }
     }
     
-    public void deleteEmployeeById(Integer id) throws RecordNotFoundException{
+    public void deleteAirportById(Integer id) throws RecordNotFoundException{
         Optional<Airport> airportOptional = airportRepository.findById(id);
         if(airportOptional.isPresent()){
             airportRepository.deleteById(id);
@@ -69,5 +94,6 @@ public class AirportService {
             throw new RecordNotFoundException("No airport record exist for given id");
         }
     }
+    
     
 }

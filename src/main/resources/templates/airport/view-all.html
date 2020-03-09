@@ -9,50 +9,67 @@ and open the template in the editor.
         <title>View Airports</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+        <link rel="stylesheet" th:href="@{/css/airport-style.css}"/>
     </head>
     <body>
         <div class="container my-2">
             <div class="card">
                 <div class="card-body">
-                    <div th:switch="${airports}" class="container my-5">
+                    <div th:switch="${airportPage.content}" class="container my-5">
                         <p class="my-5">
                             <a href="/airport/edit" class="btn btn-info">
                                 <i class="fas fa-map-marker-alt ml-2"> Add Airport </i></a>
                         </p>
-                        <div class="col-md-10">
+                        <div class="col-md-10" >
                             <h2 th:case="null">No record found !!</h2>
-                            <div th:case="*">
-                                <table class="table table-striped table-responsive-md">
-                                    <thead>
-                                        <tr>
-                                            <th class="delete-button">Name</th>
-                                            <th>Location</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="airport : ${airports}">
-                                            <td th:text="${airport.name}"></td>
-                                            <td th:text="${airport.location}"></td>
-                                            <td>
-                                                <a th:href="@{/airport/edit/{id}(id=${airport.id})}"
-                                                   class="btn btn-primary">
-                                                    <i class="fas fa-edit ml-2"></i>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a th:href="@{/airport/delete/{id}(id=${airport.id})}"
-                                                   class="btn btn-danger delete-button">
-                                                    <i class="fas fa-trash-alt ml-2"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div th:case="*" >
+                                <div class='show-airport'>
+                                    <table class="table table-striped table-responsive-md ">
+                                        <thead>
+                                            <tr>
+                                                <th class='bkb'>Name</th>
+                                                <th>Location</th>
+                                                <th colspan='2'>Operations</th>
+                                          
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="airport, iStat : ${airportPage.content}"
+                                                th:style="${iStat.odd}? 'font-weight: bold;'"
+                                                th:alt-title="${iStat.even}? 'even' : 'odd'"
+                                                >
+                                                <td th:text="${airport.name}"></td>
+                                                <td th:text="${airport.location}"></td>
+                                                <td>
+                                                    <a th:href="@{/airport/edit/{id}(id=${airport.id})}"
+                                                       class="btn btn-primary">
+                                                        <i class="fas fa-edit ml-2"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a th:href="@{/airport/delete/{id}(id=${airport.id})}"
+                                                       class="btn btn-danger delete-button">
+                                                        <i class="fas fa-trash-alt ml-2"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <ul class="pagination" >
+                                    <li th:if="${airportPage.totalPages > 0}"
+                                        th:each="pageNumber:${pageNumbers}" th:class="page-item">
+
+                                        <a th:href="@{/airport/all(size=${airportPage.size},page=${pageNumber})}" th:text=${pageNumber}
+                                           th:classappend="${(pageNumber ==airportPage.number+1 ? 'active':'')}" ></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -68,6 +85,12 @@ and open the template in the editor.
                 } else {
                     e.preventDefault();
                 }
+            })
+        })
+        
+         $(document).ready(function () {
+            $(".bkb").on("click", function (e) {
+                alert('Test jquery');
             })
         })
     </script>

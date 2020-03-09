@@ -10,8 +10,14 @@ import com.faber.airplaneappfinal.entities.Airport;
 import com.faber.airplaneappfinal.exception.RecordNotFoundException;
 import com.faber.airplaneappfinal.services.AirportService;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -40,14 +47,25 @@ public class AirportController {
     }
 
     @GetMapping(value = {"/all","/"})
-    public String findAll(Model model) {
-        ArrayList<Airport> airports = (ArrayList<Airport>) airportService.findAll();
-        model.addAttribute("airports", airports);
+    public String findAll(Model model,@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+//        ArrayList<Airport> airports = (ArrayList<Airport>) airportService.findAll();
+//        model.addAttribute("airports", airports);
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        
+        Page<Airport> airportPage = airportService.findPaginated(PageRequest.of(currentPage-1, pageSize));
+        model.addAttribute("airportPage",airportPage);
+        
+        int totalPages = airportPage.getTotalPages();
+        if(totalPages>0){
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers",pageNumbers);
+        }
         return "airport/view-all";
     }
 
     @RequestMapping(path = {"/edit", "/edit/{id}"})
-    public String editEmployeeById(Model model, @PathVariable("id") Optional<Integer> id) throws RecordNotFoundException{
+    public String editAirportById(Model model, @PathVariable("id") Optional<Integer> id) throws RecordNotFoundException{
         if(id.isPresent()){
             Airport airport = airportService.getAirportById(id.get());
             model.addAttribute("status",ConstantVariables.updateStatus);
@@ -61,12 +79,13 @@ public class AirportController {
     }
     
     @RequestMapping(path="/delete/{id}")
-    public String deleteEmployeeById(Model model,@PathVariable("id")Integer id)
+    public String deleteAirportById(Model model,@PathVariable("id")Integer id)
             throws RecordNotFoundException{
-        airportService.deleteEmployeeById(id);
+        airportService.deleteAirportById(id);
         return "redirect:/airport/";
     }
     
+   
     
 
 }
