@@ -7,6 +7,7 @@ package com.faber.airplaneappfinal.services;
 
 import com.faber.airplaneappfinal.entities.Flight;
 import com.faber.airplaneappfinal.exception.RecordNotFoundException;
+import com.faber.airplaneappfinal.repositories.AirportRepository;
 import com.faber.airplaneappfinal.repositories.FlightRepository;
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +29,14 @@ public class FlightService {
     @Autowired
     FlightRepository flightRepository;
 
+    @Autowired
+    AirportRepository airportRepository;
+    
     public Page<Flight> findPaginated(Pageable pageable) {
         List<Flight> flights = flightRepository.findAll();
+        for(Flight flight: flights){
+            flight.setRemainingQuantity(150);
+        }
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
@@ -55,7 +62,7 @@ public class FlightService {
                 Flight newFlight = flightOptional.get();
                 newFlight.setFlightCode(flight.getFlightCode());
                 newFlight.setDepartureAirport(flight.getDepartureAirport());
-//                newFlight.setArrivalAirport(flight.getArrivalAirport());
+                newFlight.setArrivalAirport(flight.getArrivalAirport());
                 newFlight.setDepartureDatetime(flight.getDepartureDatetime());
                 newFlight.setArrivalDatetime(flight.getDepartureDatetime());
                 newFlight.setPrice(flight.getPrice());

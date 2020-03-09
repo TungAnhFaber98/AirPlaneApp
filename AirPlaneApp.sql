@@ -27,7 +27,7 @@ CREATE TABLE `airport` (
   `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `location` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `airport` (
 
 LOCK TABLES `airport` WRITE;
 /*!40000 ALTER TABLE `airport` DISABLE KEYS */;
-INSERT INTO `airport` VALUES (1,'Nội Bài','Hà Nội'),(2,'Tân Sơn Nhất','Hồ Chí Minh'),(3,'Cát Bi','Hải Phòng'),(4,'Phú Xuân','Bình Định'),(5,'Bahama','Huế'),(6,'Bukara','Lạng Sơn'),(8,'Changi','Quảng Ninh'),(9,'Faber','Long An');
+INSERT INTO `airport` VALUES (1,'Nội Bài','Hà Nội'),(2,'Tân Sơn Nhất','Hồ Chí Minh'),(10,'Cát Bi','Hải Phòng'),(11,'Thừa Thiên','Huế'),(12,'Vân Đồn','Quảng Ninh The Best'),(13,'Phú Quốc','Phú Quốc'),(14,'Vạn Hạnh','Quảng Trị'),(15,'Bahama','USA');
 /*!40000 ALTER TABLE `airport` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +80,7 @@ CREATE TABLE `flight` (
   `price` int DEFAULT NULL,
   `seat_quantity` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,6 +89,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
+INSERT INTO `flight` VALUES (1,'VN100',1,2,'2020-03-04 17:30:00','2020-03-03 20:00:00',1000000,150),(2,'VN102',2,1,'2020-03-04 18:30:00','2020-03-03 21:00:00',1000000,150),(3,'VN103',1,2,'2020-03-20 15:00:00','2020-03-20 18:00:00',1500000,150),(4,'VN111',2,1,'2020-03-20 15:30:00','2020-03-20 12:00:00',5000000,150),(5,'VN500',1,2,'2020-03-18 15:50:00','2020-03-18 17:30:00',2000000,150),(6,'VN403',2,1,'2020-03-20 19:00:00','2020-03-20 21:00:00',2000000,150),(7,'VJ231',1,2,'2020-03-26 14:00:00','2020-03-26 15:00:00',1200000,150),(8,'VJ1232',1,2,'2020-03-27 15:00:00','2020-03-27 17:00:00',300000,160),(9,'BAN100',13,10,'2020-03-09 17:06:00','2020-03-09 17:06:00',1500000,150);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-06 15:01:48
+-- Dump completed on 2020-03-09 17:37:40

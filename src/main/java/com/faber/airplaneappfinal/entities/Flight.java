@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,12 +33,12 @@ public class Flight {
     @Column(name = "flight_code")
     private String flightCode;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "departure_airport_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Airport departureAirport;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "arrival_airport_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Airport arrivalAirport;
@@ -55,6 +56,9 @@ public class Flight {
     @Column(name = "seat_quantity")
     private int seatQuantity;
 
+    @Transient
+    private int remainingQuantity;
+    
     public Flight( Date departureDatetime, Date arrivalDatetime, int price, int seatQuantity) {
         
         this.departureDatetime = departureDatetime;
@@ -132,4 +136,12 @@ public class Flight {
         this.seatQuantity = seatQuantity;
     }
 
+    public int getRemainingQuantity() {
+        return remainingQuantity;
+    }
+
+    public void setRemainingQuantity(int remainingQuantity) {
+        this.remainingQuantity = remainingQuantity;
+    }
+    
 }
