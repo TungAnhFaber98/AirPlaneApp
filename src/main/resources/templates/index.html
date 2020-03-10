@@ -125,6 +125,33 @@ and open the template in the editor.
                                 $("#return_date").attr("disabled", false);
                             }
                         })
+                        
+                        $("#form-flight-search").on("submit",function(e){
+                            var departureAirport = $("#departure_airport_id").val();
+                            var arrivalAirport = $("#arrival_airport_id").val();
+                            if(departureAirport==arrivalAirport){
+                                alert('Arrival Airport must different from Departure Airport');
+                                e.preventDefault();
+                                return;
+                            }
+                            var departure_date = $("#departure_date").val();
+                         
+                            if(!departure_date){
+                                alert('Departure date must not be empty ');
+                                e.preventDefault();
+                                return;
+                            }
+                            
+                            var is_return = $("#return_type").val();
+                            var return_date = $("#return_date").val();
+                            
+                            if(!!is_return && !return_date){
+                                alert('Return date must not be empty for Round Trip');
+                                e.preventDefault();
+                                return;
+                            }
+                          
+                        })
                     })
                 </script>
             </div>
