@@ -15,7 +15,7 @@ and open the template in the editor.
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-        <link rel="stylesheet" th:href="@{/css/flight-style.css}"/>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
     </head>
     <body>
         <div class="container my-4">
@@ -23,13 +23,13 @@ and open the template in the editor.
                 <div class="card-body">
                     <div th:switch="${flightPage.content}" class="container my-5">
                         <p class="my-5">
-                            <a href="/flight/edit" class="btn btn-info">
+                            <a href="/admin/flight/edit" class="btn btn-info">
                                 <i class="fas fa-map-marker-alt ml-2"> Add Flight </i></a>
                         </p>
                         <div class="col-md-20" >
                             <h2 th:case="null">No record found !!</h2>
                             <div th:case="*" >
-                                <div class='show-airport'>
+                                <div class='show-list'>
                                     <table class="table table-striped table-responsive-md align-top">
                                         <thead>
                                             <tr>
@@ -58,16 +58,23 @@ and open the template in the editor.
                                                 <td th:text="${flight.seatQuantity}"></td>
                                                 <td th:text="${flight.remainingQuantity}"></td>
                                                 <td>
-                                                    <a th:href="@{/flight/edit/{id}(id=${flight.id})}"
+                                                    <a th:href="@{/admin/flight/edit/{id}(id=${flight.id})}"
                                                        class="btn btn-primary">
                                                         <i class="fas fa-edit ml-2"></i>
                                                     </a>
                                                 </td>
-
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
+                                <ul class="pagination" >
+                                    <li th:if="${flightPage.totalPages > 0}"
+                                        th:each="pageNumber:${pageNumbers}" th:class="page-item">
+
+                                        <a th:href="@{/admin/flight/all(size=${flightPage.size},page=${pageNumber})}" th:text=${pageNumber}
+                                           th:classappend="${(pageNumber ==flightPage.number+1 ? 'active':'')}" ></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

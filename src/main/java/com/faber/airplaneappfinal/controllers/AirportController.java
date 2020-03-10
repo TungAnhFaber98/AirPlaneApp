@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Engineer_Account
  */
 @Controller
-@RequestMapping("/airport")
+@RequestMapping("/admin/airport")
 public class AirportController {
 
     @Autowired
@@ -43,10 +43,10 @@ public class AirportController {
     @PostMapping("/create")
     public String createAirport(Airport airport) {
         airportService.createOrUpdateAirport(airport);
-        return "redirect:/airport/all";
+        return "redirect:/admin/airport/all";
     }
 
-    @GetMapping(value = {"/all","/"})
+    @GetMapping(value = {"/all",""})
     public String findAll(Model model,@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 //        ArrayList<Airport> airports = (ArrayList<Airport>) airportService.findAll();
 //        model.addAttribute("airports", airports);
@@ -82,7 +82,7 @@ public class AirportController {
     public String deleteAirportById(Model model,@PathVariable("id")Integer id)
             throws RecordNotFoundException{
         airportService.deleteAirportById(id);
-        return "redirect:/airport/";
+        return "redirect:/admin/airport/";
     }
     
    

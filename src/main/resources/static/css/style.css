@@ -23,3 +23,62 @@ table {
 th {
     height: 50px;
 }
+
+.pagination {
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination a {
+    background-color: #fff;
+    color: green;
+    float: left;
+    padding: 10px 10px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+    color: #fff;
+    text-decoration: none;
+    background-color: #337ab7;
+    border: 1px solid #ddd;
+}
+
+.show-list{
+    min-height: 50vh;
+    text-align: center;
+}
+
+.background-searchpage{
+    background: url("/images/background-image.jpg") no-repeat center center fixed ;
+    background-size: cover;
+    background-color: hsla(0,0%,0%,0.1);
+    background-blend-mode: overlay;
+}
+
+.search-card{
+    display: flex !important;
+    margin-top: 4vh;
+    margin-right: auto;
+    margin-left:auto;
+
+}
+
+.search-content{
+    padding:10px;
+}
+
+.row.row-grid [class*="col-"] + [class*="col-"] {
+    margin-top: 15px;
+}
+
+.row-spacing{
+    margin-bottom: 5px;
+}
+
+.btn-search-flight{
+    margin-top: 30px;
+}

@@ -94,4 +94,8 @@ public class FlightService {
             throw new RecordNotFoundException("No flight record exists for given id");
         }
     }
+    
+    public List<Flight> findFlightListForCustomer(int departureAirportId,int arrivalAirportId){
+        return flightRepository.findFlightListForCustomer(departureAirportId, arrivalAirportId);
+    }
 }

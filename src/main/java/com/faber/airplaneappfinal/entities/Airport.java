@@ -42,6 +42,10 @@ public class Airport {
     public Airport() {
     }
 
+    public Airport(Integer id) {
+        this.id = id;
+    }
+
     public Airport(String name, String location) {
         this.name = name;
         this.location = location;

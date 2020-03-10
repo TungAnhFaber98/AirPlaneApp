@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author Engineer_Account
  */
 @Controller
-@RequestMapping(path = "/flight")
+@RequestMapping(path = "/admin/flight")
 public class FlightController {
 
     @Autowired
@@ -47,13 +47,13 @@ public class FlightController {
     @PostMapping("/create")
     public String createFlight(Flight flight) {
         flightService.createOrUpdateFlight(flight);
-        return "redirect:/flight/all";
+        return "redirect:/admin/flight/all";
     }
 
     @GetMapping(value = {"/all", "/"})
     public String findAll(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
-        int pageSize = page.orElse(5);
+        int pageSize = size.orElse(5);
 
         Page<Flight> flightPage = flightService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
         model.addAttribute("flightPage", flightPage);
@@ -71,6 +71,7 @@ public class FlightController {
         Flight flight = new Flight( Calendar.getInstance().getTime(), Calendar.getInstance().getTime(), 1500000, 150);        
         if (id.isPresent()) {
             flight = flightService.getFlightById(id.get());
+            model.addAttribute("flight", flight);
             model.addAttribute("status", ConstantVariables.updateStatus);
         } else {
             model.addAttribute("status", ConstantVariables.createStatus);
