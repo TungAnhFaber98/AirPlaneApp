@@ -27,7 +27,7 @@ and open the template in the editor.
                                 <i class="fas fa-map-marker-alt ml-2"> Add Flight </i></a>
                         </p>
                         <div class="col-md-20" >
-                            <h2 th:case="null">No record found !!</h2>
+                            <h2 th:case="null">No flights found !!</h2>
                             <div th:case="*" >
                                 <div class='show-list'>
                                     <table class="table table-striped table-responsive-md align-top">
@@ -52,8 +52,8 @@ and open the template in the editor.
                                                 <td th:text="${flight.flightCode}"></td>
                                                 <td th:text="${flight.departureAirport.name}"></td>
                                                 <td th:text="${flight.arrivalAirport.name}"></td>
-                                                <td th:text="${flight.departureDatetime}"></td>
-                                                <td th:text="${flight.arrivalDatetime}"></td>
+                                                <td th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'yyyy-MM-dd hh:mm')}"></td>
+                                                <td th:text="${#dates.format(new java.util.Date (flight.arrivalDatetime),'yyyy-MM-dd hh:mm')}"></td>
                                                 <td th:text="${flight.price}"></td>
                                                 <td th:text="${flight.seatQuantity}"></td>
                                                 <td th:text="${flight.remainingQuantity}"></td>

@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.faber.airplaneappfinal.controllers;
+package com.faber.airplanefinal.utils;
 
-import org.springframework.stereotype.Controller;
+import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
  * @author Engineer_Account
  */
-@Controller
-public class CustomerTypeController {
-    
+public class FormatDate {
+
 }

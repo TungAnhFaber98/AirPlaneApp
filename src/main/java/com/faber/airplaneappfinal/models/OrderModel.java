@@ -19,7 +19,9 @@ public class OrderModel {
     private Integer departureAirportId;
     private Integer arrivalAirportId;
     private boolean returnType;
-    private int numOfPassengers;
+    private int numOfAdult;
+    private int numOfChildren;
+    private int numOfSenior;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
@@ -28,6 +30,10 @@ public class OrderModel {
     private Date returnDate;
 
     public OrderModel() {
+        numOfAdult= 1;
+        numOfChildren=0;
+        numOfSenior=0;
+
     }
 
     public Integer getId() {
@@ -54,12 +60,12 @@ public class OrderModel {
         this.arrivalAirportId = arrivalAirportId;
     }
 
-    public int getNumOfPassengers() {
-        return numOfPassengers;
+    public int getNumOfAdult() {
+        return numOfAdult;
     }
 
-    public void setNumOfPassengers(int numOfPassengers) {
-        this.numOfPassengers = numOfPassengers;
+    public void setNumOfAdult(int numOfAdult) {
+        this.numOfAdult = numOfAdult;
     }
 
     public Date getDepartureDate() {
@@ -86,11 +92,28 @@ public class OrderModel {
         this.returnType = returnType;
     }
 
+    public int getNumOfChildren() {
+        return numOfChildren;
+    }
+
+    public void setNumOfChildren(int numOfChildren) {
+        this.numOfChildren = numOfChildren;
+    }
+
+    public int getNumOfSenior() {
+        return numOfSenior;
+    }
+
+    public void setNumOfSenior(int numOfSenior) {
+        this.numOfSenior = numOfSenior;
+    }
+
+    
     public String toString() {
         return "Departure Airport: " + departureAirportId 
                 + " | Arrival Airport: " + arrivalAirportId
                 + " | Is Return ? " + isReturnType() 
-                +" | Num of Passengers: " + numOfPassengers 
+                +" | Num of Passengers: " + numOfAdult 
                 + " | Depart Date: " + departureDate
                 + " | Return Date: " + returnDate ;
     }

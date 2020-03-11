@@ -50,7 +50,7 @@ public class FlightController {
         return "redirect:/admin/flight/all";
     }
 
-    @GetMapping(value = {"/all", "/"})
+    @GetMapping(value = {"/all", ""})
     public String findAll(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);

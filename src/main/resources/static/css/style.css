@@ -68,7 +68,7 @@ th {
 }
 
 .search-content{
-    padding:10px;
+    padding:50px;
 }
 
 .row.row-grid [class*="col-"] + [class*="col-"] {
@@ -80,5 +80,28 @@ th {
 }
 
 .btn-search-flight{
-    margin-top: 30px;
+    display: table;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.list-item{
+    padding: 10px 10px 5px 10px;
+    border: 1px solid #c8c8c8;
+    position: relative;
+    background-color: #FFF;
+    margin-bottom: -1px;
+}
+
+.flight-image{
+    max-width: 60px;
+    max-height: 60px;
+}
+.highlight-text{
+    font-weight: bold;
+    font-size: 20px;
+}
+.price{
+    color:red;
+    font-size: 25px
 }

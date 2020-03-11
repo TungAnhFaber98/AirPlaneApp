@@ -7,9 +7,12 @@ package com.faber.airplaneappfinal.services;
 
 import com.faber.airplaneappfinal.entities.Flight;
 import com.faber.airplaneappfinal.exception.RecordNotFoundException;
+import com.faber.airplaneappfinal.models.OrderModel;
 import com.faber.airplaneappfinal.repositories.AirportRepository;
 import com.faber.airplaneappfinal.repositories.FlightRepository;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +34,11 @@ public class FlightService {
 
     @Autowired
     AirportRepository airportRepository;
-    
+
     public Page<Flight> findPaginated(Pageable pageable) {
         List<Flight> flights = flightRepository.findAll();
-        for(Flight flight: flights){
+        Collections.reverse(flights);
+        for (Flight flight : flights) {
             flight.setRemainingQuantity(150);
         }
         int pageSize = pageable.getPageSize();
@@ -42,7 +46,7 @@ public class FlightService {
         int startItem = currentPage * pageSize;
 
         List<Flight> list;
-        if (flights.size() < startItem ) {
+        if (flights.size() < startItem) {
             list = Collections.emptyList();
         } else {
             int toIndex = Math.min(startItem + pageSize, flights.size());
@@ -94,8 +98,55 @@ public class FlightService {
             throw new RecordNotFoundException("No flight record exists for given id");
         }
     }
-    
-    public List<Flight> findFlightListForCustomer(int departureAirportId,int arrivalAirportId){
-        return flightRepository.findFlightListForCustomer(departureAirportId, arrivalAirportId);
+
+    public List<Flight> findFlightListForCustomerOnewayType(OrderModel orderModel) {
+        Date departureDate = orderModel.getDepartureDate();
+        Calendar cld = Calendar.getInstance();
+        cld.setTime(departureDate);
+        cld.add(Calendar.DATE, 1);
+        return flightRepository.findFlightListForCustomerOnewayType(orderModel.getDepartureAirportId(),
+                orderModel.getArrivalAirportId(),
+                orderModel.getDepartureDate(),
+                cld.getTime());
     }
+
+    public List<Flight> findFlightListForCustomerReturn(OrderModel orderModel) {
+        Date returnDate = orderModel.getReturnDate();
+        Calendar cld = Calendar.getInstance();
+        cld.setTime(returnDate);
+        cld.add(Calendar.DATE, 1);
+        return flightRepository.findFlightListForCustomerOnewayType(
+                orderModel.getArrivalAirportId(),
+                orderModel.getDepartureAirportId(),
+                orderModel.getDepartureDate(),
+                cld.getTime());
+    }
+
+//    public Page<Flight> findPaginatedCustomerSearch(Pageable pageable,OrderModel orderModel) {
+//        Date departureDate = orderModel.getDepartureDate();
+//        Calendar cld = Calendar.getInstance();
+//        cld.setTime(departureDate);
+//        cld.add(Calendar.DATE, 1);
+//        List<Flight> flights = flightRepository.findFlightListForCustomerOnewayType(orderModel.getDepartureAirportId(),
+//                orderModel.getArrivalAirportId(), 
+//                departureDate,
+//                cld.getTime());
+//        Collections.reverse(flights);
+//        for(Flight flight: flights){
+//            flight.setRemainingQuantity(150);
+//        }
+//        int pageSize = pageable.getPageSize();
+//        int currentPage = pageable.getPageNumber();
+//        int startItem = currentPage * pageSize;
+//
+//        List<Flight> list;
+//        if (flights.size() < startItem ) {
+//            list = Collections.emptyList();
+//        } else {
+//            int toIndex = Math.min(startItem + pageSize, flights.size());
+//            list = flights.subList(startItem, toIndex);
+//        }
+//        Page<Flight> flightPage = new PageImpl<Flight>(list, PageRequest.of(currentPage, pageSize), flights.size());
+//        return flightPage;
+//    }
 }

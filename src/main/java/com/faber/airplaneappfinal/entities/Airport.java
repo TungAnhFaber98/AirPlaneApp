@@ -34,10 +34,26 @@ public class Airport {
     private String location;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "departureAirport")
-    private List<Flight> departureFlights = new ArrayList<>(0);
+    private List<Flight> departureFlights = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "arrivalAirport")
-    private List<Flight> arrivalFlights = new ArrayList<>(0);
+    private List<Flight> arrivalFlights = new ArrayList<>();
+
+    public List<Flight> getDepartureFlights() {
+        return departureFlights;
+    }
+
+    public void setDepartureFlights(List<Flight> departureFlights) {
+        this.departureFlights = departureFlights;
+    }
+
+    public List<Flight> getArrivalFlights() {
+        return arrivalFlights;
+    }
+
+    public void setArrivalFlights(List<Flight> arrivalFlights) {
+        this.arrivalFlights = arrivalFlights;
+    }
 
     public Airport() {
     }

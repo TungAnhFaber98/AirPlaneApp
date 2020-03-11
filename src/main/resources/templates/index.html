@@ -22,7 +22,8 @@ and open the template in the editor.
                 <div class="card search-card">
 
                     <div class="card-body search-content">
-                        <div class="row row-spacing" ><h5 class="card-title col">Choose your flight - Hello <span th:text="${session.user}">customer</span></h5></div>
+                        <div class="row row-spacing" ><h5 class="card-title col">Hello 
+                                <span  th:text="${session.user} ?: 'customer'"></span> - Choose your flight</h5></div>
                         <form action="#" th:action="@{/flight/search}" th:object="${orderModel}"
                               method="post" id='form-flight-search'>
                             <div class="row row-spacing">
@@ -34,8 +35,8 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <div class="row row-spacing">
-                                <div class="col col-4">
-                                    <label for="usr">From: </label>
+                                <div class="col col-6">
+                                    <label >From </label>
                                     <div>
                                         <select th:field="*{departureAirportId}"  class="form-control" id="departure_airport_id">
                                             <option th:each="airport: ${airportList}" 
@@ -43,8 +44,8 @@ and open the template in the editor.
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col col-4">
-                                    <label for="usr">To: </label>
+                                <div class="col col-6">
+                                    <label >To</label>
                                     <div>
                                         <select th:field="*{arrivalAirportId}"  class="form-control" id="arrival_airport_id">
                                             <option th:each="airport: ${airportList}" 
@@ -52,41 +53,52 @@ and open the template in the editor.
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col col-4">
-                                    <label for="usr">Number of passengers: </label>
-                                    <div>
-                                        <select class="form-control" th:field="*{numOfPassengers}">
-                                            <option th:value="1">1</option>
-                                            <option th:value="2">2</option>
-                                            <option th:value="3">3</option>
-                                            <option th:value="4">4</option>
-                                            <option th:value="5">5</option>
-                                            <option th:value="6">6</option>
-                                            <option th:value="7">7</option>
-                                            <option th:value="8">8</option>
-                                            <option th:value="9">9</option>
-                                        </select>
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="row row-spacing">
                                 <div class="col col-4">
-                                    <label for="">Departure Date: </label>
+                                    <label for="">Departure Date</label>
                                     <input th:field="*{departureDate}" type="date" class="form-control" id="departure_date" />
                                 </div>
                                 <div class="col col-4">
-                                    <label for="">Return Date: </label>
-                                    <input th:field="*{returnDate}" type="date" class="form-control" id="return_date" />
+                                    <label for="">Return Date </label>
+                                    <input th:field="*{returnDate}" type="date" class="form-control" id="return_date" 
+                                           th:disabled ="${orderModel.returnType != true || orderModel.returnType == 0}"
+                                           />
                                 </div>
-                                <div class="col col-4">
-                                    <button class="btn btn-primary form-control btn-search-flight" type="submit">Search flight</button>
-                                </div>
+                            </div>
+                            <div class='row row-spacing'>
+                                <div class="col col-3">
+                                    <label for="usr">Adults </label>
+                                    <div>
+                                        <input type='text' class="form-control" th:field="*{numOfAdult}">
 
+                                    </div>
+                                </div>
+                                <div class="col col-3">
+                                    <label for="usr">Children </label>
+                                    <div>
+                                        <input type='text' class="form-control" th:field="*{numOfChildren}">
+
+                                    </div>
+                                </div>
+                                <div class="col col-3">
+                                    <label for="usr">Seniors </label>
+                                    <div>
+                                        <input type='text' class="form-control" th:field="*{numOfSenior}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='row row-spacing'>
+                                  <div class="col col-12">
+                                      <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">Search flight</button>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <script>
+                    // format date for date picker
                     function formatDate(date) {
                         var dd = date.getDate();
                         var mm = date.getMonth() + 1;
@@ -108,6 +120,7 @@ and open the template in the editor.
                         $("#departure_date").attr("min", today);
                         $("#return_date").attr("min", today);
 
+                        // set return date later departure date when departure date change 
                         $("#departure_date").change(function () {
                             var departure_date = $(this).val();
                             var return_date = $("#return_date").val();
@@ -117,6 +130,7 @@ and open the template in the editor.
                             $("#return_date").attr("min", departure_date);
                         });
 
+                        // Disable and un-disable Return date field when change return type field
                         $("#return_type").on("change", function () {
                             var returnTypeValue = $(this).val();
                             if (returnTypeValue == 0) {
@@ -125,33 +139,37 @@ and open the template in the editor.
                                 $("#return_date").attr("disabled", false);
                             }
                         })
-                        
-                        $("#form-flight-search").on("submit",function(e){
+
+                        // validate form basically before submit  
+                        $("#form-flight-search").on("submit", function (e) {
                             var departureAirport = $("#departure_airport_id").val();
                             var arrivalAirport = $("#arrival_airport_id").val();
-                            if(departureAirport==arrivalAirport){
-                                alert('Arrival Airport must different from Departure Airport');
+                            if (departureAirport == arrivalAirport) {
+                                alert('Arrival Airport must be different from Departure Airport');
                                 e.preventDefault();
                                 return;
                             }
                             var departure_date = $("#departure_date").val();
-                         
-                            if(!departure_date){
+
+                            if (!departure_date) {
                                 alert('Departure date must not be empty ');
                                 e.preventDefault();
                                 return;
                             }
-                            
+
                             var is_return = $("#return_type").val();
                             var return_date = $("#return_date").val();
-                            
-                            if(!!is_return && !return_date){
+
+                            if (is_return == 1 && !return_date) {
                                 alert('Return date must not be empty for Round Trip');
                                 e.preventDefault();
                                 return;
                             }
-                          
                         })
+
+                        if ($("#return_type").val() == 0) {
+                            $("#return_date").attr("disabled", true);
+                        }
                     })
                 </script>
             </div>
