@@ -13,4 +13,6 @@ public class ConstantVariables {
     public static int createStatus = 0;
     public static int updateStatus = 1;
     public static double feeDiscount = 0.5;
+    public static int seatAvailable = 0;
+    public static int seatNotAvailabe = 1;
 }

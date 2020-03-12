@@ -5,7 +5,9 @@
  */
 package com.faber.airplaneappfinal.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -58,9 +61,12 @@ public class Flight {
 
     @Transient
     private int remainingQuantity;
-    
-    public Flight( Date departureDatetime, Date arrivalDatetime, int price, int seatQuantity) {
-        
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "flight")
+    List<Ticket> tickets = new ArrayList<>();
+
+    public Flight(Date departureDatetime, Date arrivalDatetime, int price, int seatQuantity) {
+
         this.departureDatetime = departureDatetime;
         this.arrivalDatetime = arrivalDatetime;
         this.price = price;
@@ -70,8 +76,6 @@ public class Flight {
     public Flight() {
     }
 
-    
-    
     public Integer getId() {
         return id;
     }
@@ -143,5 +147,5 @@ public class Flight {
     public void setRemainingQuantity(int remainingQuantity) {
         this.remainingQuantity = remainingQuantity;
     }
-    
+
 }

@@ -5,9 +5,13 @@
  */
 package com.faber.airplaneappfinal.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +26,9 @@ public class CustomerType {
     private Integer id;
     
     private String name;
+    
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "customerType")
+    List<Ticket> tickets =new ArrayList<>(); 
 
     public Integer getId() {
         return id;

@@ -5,6 +5,7 @@
  */
 package com.faber.airplaneappfinal.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Entity;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,6 +25,7 @@ public class OrderModel {
     private int numOfSenior;
     private int departureFlightId;
     private int returnFlightId;
+    private String listSeat [];
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
@@ -126,6 +128,15 @@ public class OrderModel {
         this.returnFlightId = returnFlightId;
     }
 
+    public String[] getListSeat() {
+        return listSeat;
+    }
+
+    public void setListSeat(String[] listSeat) {
+        this.listSeat = listSeat;
+    }
+
+    
     
     public String toString() {
         return "Departure Airport: " + departureAirportId
