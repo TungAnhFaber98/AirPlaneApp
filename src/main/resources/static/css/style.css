@@ -113,3 +113,13 @@ th {
     color:red;
     font-size: 25px
 }
+
+.medium-label{
+    font-weight: 700;
+    color: #222;
+    font-size: 25px;
+}
+
+.price-collapse{
+    margin-top:15px;
+}

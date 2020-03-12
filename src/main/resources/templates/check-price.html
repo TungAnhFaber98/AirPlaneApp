@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+    <head>
+        <title>Check Price</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    </head>
+    <body class="background-searchpage">
+        <div layout:fragment="content">
+            <div class="container my-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form id='choose-flight-form' th:object="${orderModel}" th:action="@{/flight/chooseSeat}" method="get">
+                            <input id= "departureAirportId" type="hidden" th:field="*{departureAirportId}" th:value="${orderModel.departureAirportId}">
+                            <input id="arrivalAirportId" type="hidden" th:field="*{arrivalAirportId}" th:value="${orderModel.arrivalAirportId}">
+                            <input id="returnType" type="hidden" th:field="*{returnType}" th:value="${orderModel.returnType}">
+                            <input id="departureDate" type="hidden" th:field="*{departureDate}" th:value="${orderModel.departureDate}">
+                            <input id="returnDate" type="hidden" th:field="*{returnDate}" th:value="${orderModel.returnDate}">
+                            <input id="numOfAdult" type="hidden" th:field="*{numOfAdult}" th:value="${orderModel.numOfAdult}">
+                            <input id="numOfChildren" type="hidden" th:field="*{numOfChildren}" th:value="${orderModel.numOfChildren}">
+                            <input id="numOfSenior" type="hidden" th:field="*{numOfSenior}" th:value="${orderModel.numOfSenior}">
+                            <input id="departureFlightId" type="hidden" th:field="*{departureFlightId}" th:value="${orderModel.departureFlightId}">
+                            <input id="returnFlightId" type="hidden" th:field="*{returnFlightId}" th:value="${orderModel.returnFlightId}">
+                            <div class='row'>
+                                <h1 class='col-12'>Price Summary</h1>
+                            </div>
+                            <div style='border: 1px black;margin-top: 20px'>
+
+                                <div id="accordion">
+                                    <div class="card price-collapse">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="mb-0 row">
+                                                <input type="button" class="btn btn-link col-9" style='text-align: left' data-toggle="collapse" 
+                                                       data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                                                       th:value="${departureAirport.name +' (' + departureAirport.location 
+                                                       + ')  --> ' + arrivalAirport.name +' (' +arrivalAirport.location + ')'}">    
+                                                <div class='col-3 price' th:text='${departureTotalPrice}'></div>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div class="card-body" >
+                                                <div class='row' th:if='${orderModel.numOfAdult > 0}'>
+                                                    <span class="col-9">Adult - fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +departureFlight.price}"> </span>
+                                                </div>
+
+                                                <div class='row' th:if='${orderModel.numOfChildren > 0}'>
+                                                    <span class="col-9">Children - fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + departureFlightPriceDiscount }"> </span>
+                                                </div>
+
+                                                <div class='row' th:if='${orderModel.numOfSenior > 0}'>
+                                                    <span class="col-9">Senior- fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + departureFlightPriceDiscount }"> </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div th:if='${orderModel.returnType}'>
+                                <div style='border: 1px black;margin-top: 20px'>
+
+                                <div id="accordion2">
+                                    <div class="card price-collapse">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5 class="mb-0 row">
+                                                <input type="button" class="btn btn-link col-9" style='text-align: left' data-toggle="collapse" 
+                                                       data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"
+                                                       th:value="${arrivalAirport.name +' (' + arrivalAirport.location 
+                                                       + ')  --> ' + departureAirport.name +' (' +departureAirport.location + ')'}">    
+                                                <div class='col-3 price' th:text='${returnTotalPrice}'></div>
+                                            </h5>
+                                        </div>
+
+                                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion2">
+                                            <div class="card-body" >
+                                                <div class='row' th:if='${orderModel.numOfAdult > 0}'>
+                                                    <span class="col-9">Adult - fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +returnFlight.price}"> </span>
+                                                </div>
+
+                                                <div class='row' th:if='${orderModel.numOfChildren > 0}'>
+                                                    <span class="col-9">Children - fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + returnFlightPriceDiscount }"> </span>
+                                                </div>
+
+                                                <div class='row' th:if='${orderModel.numOfSenior > 0}'>
+                                                    <span class="col-9">Senior- fee: </span>
+                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + returnFlightPriceDiscount }"> </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class='row row-spacing'>
+                                <div class="col col-12">
+                                    <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">
+                                        Continue booking
+                                        <i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $('.price').each(function () {
+                        var price = $(this).text();
+                        $(this).text(numberWithCommas(price) + ' VNĐ')
+                    })
+                    $('.sub-price').each(function () {
+                        var price = $(this).text();
+                        $(this).text(numberWithCommas(price) + ' VNĐ')
+                    })
+                })
+            </script>
+    </body>
+</html>

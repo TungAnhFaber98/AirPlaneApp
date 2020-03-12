@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+    <head>
+        <title>View Flight</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    </head>
+    <body class="background-searchpage">
+        <div layout:fragment="content">
+            <div class="container my-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h1>Flight Seat Selection</h1>
+                        <table>
+                            <tr><th>Id</th><th>Name</th></tr>
+                            <tr th:each="mapEntry: ${testMap}">
+                                <td th:text="${mapEntry.key}">key</td>
+                                <td th:text="${mapEntry.value}">value</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </body>
+</html>

@@ -14,13 +14,14 @@ and open the template in the editor.
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
     </head>
     <body class="background-searchpage">
         <div layout:fragment="content">
             <div class="container my-4">
                 <div class="card">
                     <div class="card-body">
-                        <form  th:object="${orderModel}" th:action="@{/flight/test}">
+                        <form id='choose-flight-form' th:object="${orderModel}" th:action="@{/flight/checkPrice}" method="get">
                             <input id= "departureAirportId" type="hidden" th:field="*{departureAirportId}" th:value="${orderModel.departureAirportId}">
                             <input id="arrivalAirportId" type="hidden" th:field="*{arrivalAirportId}" th:value="${orderModel.arrivalAirportId}">
                             <input id="returnType" type="hidden" th:field="*{returnType}" th:value="${orderModel.returnType}">
@@ -126,9 +127,12 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
+
                             <div class='row row-spacing'>
                                 <div class="col col-12">
-                                    <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">Next step</button>
+                                    <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">
+                                        Continue booking
+                                        <i class="fas fa-arrow-right"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -136,15 +140,15 @@ and open the template in the editor.
                 </div>
             </div>
             <script>
-                function numberWithCommas(x) {
-                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
+
                 $(document).ready(function () {
+                    // format price, add . and VND ( 1000000 --> 1.000.000 VND)
                     $('.price').each(function () {
                         var price = $(this).text();
                         $(this).text(numberWithCommas(price) + ' VNĐ')
                     })
 
+                    // choose departure flight
                     $('.departure-flight').on("click", function () {
                         $(this).text("Chosen");
                         $(this).addClass('btn-success')
@@ -158,6 +162,8 @@ and open the template in the editor.
                             }
                         })
                     })
+
+                    // choose return flight
                     $('.return-flight').on("click", function () {
                         $(this).text("Chosen");
                         $(this).addClass('btn-success')
@@ -171,9 +177,28 @@ and open the template in the editor.
                             }
                         })
                     })
+
+                    // check form before submit
+                    $('#choose-flight-form').on('submit', function (e) {
+                        var returnType = $('#returnType').val();
+                        var departureFlightId = $("#departureFlightId").val();
+                        var returnFlightId = $("#returnFlightId").val();
+                        if (!departureFlightId || departureFlightId == 0) {
+                            alert("Please choose Departure Flight before Continuing booking");
+                            e.preventDefault();
+                            return;
+                        }
+                        if (returnType == 'true' && returnFlightId == 0) {
+                            alert("Please choose Return Flight before Continuing booking");
+                            e.preventDefault();
+                            return;
+                        }
+                        
+                    })
                 })
 
             </script>
+
         </div>
 
     </body>

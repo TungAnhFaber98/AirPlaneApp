@@ -12,4 +12,5 @@ package com.faber.airplaneappfinal.constant;
 public class ConstantVariables {
     public static int createStatus = 0;
     public static int updateStatus = 1;
+    public static double feeDiscount = 0.5;
 }

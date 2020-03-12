@@ -118,7 +118,7 @@ public class FlightService {
         return flightRepository.findFlightListForCustomerOnewayType(
                 orderModel.getArrivalAirportId(),
                 orderModel.getDepartureAirportId(),
-                orderModel.getDepartureDate(),
+                orderModel.getReturnDate(),
                 cld.getTime());
     }
 
