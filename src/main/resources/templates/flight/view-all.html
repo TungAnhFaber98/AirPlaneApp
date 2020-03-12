@@ -52,8 +52,8 @@ and open the template in the editor.
                                                 <td th:text="${flight.flightCode}"></td>
                                                 <td th:text="${flight.departureAirport.name}"></td>
                                                 <td th:text="${flight.arrivalAirport.name}"></td>
-                                                <td th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'yyyy-MM-dd hh:mm')}"></td>
-                                                <td th:text="${#dates.format(new java.util.Date (flight.arrivalDatetime),'yyyy-MM-dd hh:mm')}"></td>
+                                                <td th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'yyyy-MM-dd HH:mm')}"></td>
+                                                <td th:text="${#dates.format(new java.util.Date (flight.arrivalDatetime),'yyyy-MM-dd HH:mm')}"></td>
                                                 <td th:text="${flight.price}"></td>
                                                 <td th:text="${flight.seatQuantity}"></td>
                                                 <td th:text="${flight.remainingQuantity}"></td>

@@ -22,6 +22,8 @@ public class OrderModel {
     private int numOfAdult;
     private int numOfChildren;
     private int numOfSenior;
+    private int departureFlightId;
+    private int returnFlightId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
@@ -30,9 +32,9 @@ public class OrderModel {
     private Date returnDate;
 
     public OrderModel() {
-        numOfAdult= 1;
-        numOfChildren=0;
-        numOfSenior=0;
+        numOfAdult = 1;
+        numOfChildren = 0;
+        numOfSenior = 0;
 
     }
 
@@ -108,14 +110,30 @@ public class OrderModel {
         this.numOfSenior = numOfSenior;
     }
 
+    public int getDepartureFlightId() {
+        return departureFlightId;
+    }
+
+    public void setDepartureFlightId(int departureFlightId) {
+        this.departureFlightId = departureFlightId;
+    }
+
+    public int getReturnFlightId() {
+        return returnFlightId;
+    }
+
+    public void setReturnFlightId(int returnFlightId) {
+        this.returnFlightId = returnFlightId;
+    }
+
     
     public String toString() {
-        return "Departure Airport: " + departureAirportId 
+        return "Departure Airport: " + departureAirportId
                 + " | Arrival Airport: " + arrivalAirportId
-                + " | Is Return ? " + isReturnType() 
-                +" | Num of Passengers: " + numOfAdult 
+                + " | Is Return ? " + isReturnType()
+                + " | Num of Passengers: " + numOfAdult
                 + " | Depart Date: " + departureDate
-                + " | Return Date: " + returnDate ;
+                + " | Return Date: " + returnDate;
     }
 
 }

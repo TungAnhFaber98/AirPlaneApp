@@ -20,103 +20,119 @@ and open the template in the editor.
             <div class="container my-4">
                 <div class="card">
                     <div class="card-body">
-                        <nav class="navbar navbar-light bg-light">
-                            <div class="row">
-                                <div class="navbar-brand mb-0 h1 col-3">From - To : </div>
-                                <div class="navbar-brand mb-0 h1 col-9" >
-                                    <label th:text="${departureAirport?.name + ' (' + departureAirport?.location + ') - '
-                                           + arrivalAirport?.name + ' (' + arrivalAirport?.location + ')'}"></label>
-                                </div >
-                            </div>
-                            <div class="row">
-                                <div class="navbar-brand mb-0 h1 col-3">Date of Departure : </div>
-                                <div class="navbar-brand mb-0 h1 col-9">
-                                    <label th:text="${#dates.format(new java.util.Date(orderModel.departureDate),'MMM-dd-yyyy')}"></label>
+                        <form  th:object="${orderModel}" th:action="@{/flight/test}">
+                            <input id= "departureAirportId" type="hidden" th:field="*{departureAirportId}" th:value="${orderModel.departureAirportId}">
+                            <input id="arrivalAirportId" type="hidden" th:field="*{arrivalAirportId}" th:value="${orderModel.arrivalAirportId}">
+                            <input id="returnType" type="hidden" th:field="*{returnType}" th:value="${orderModel.returnType}">
+                            <input id="departureDate" type="hidden" th:field="*{departureDate}" th:value="${orderModel.departureDate}">
+                            <input id="returnDate" type="hidden" th:field="*{returnDate}" th:value="${orderModel.returnDate}">
+                            <input id="numOfAdult" type="hidden" th:field="*{numOfAdult}" th:value="${orderModel.numOfAdult}">
+                            <input id="numOfChildren" type="hidden" th:field="*{numOfChildren}" th:value="${orderModel.numOfChildren}">
+                            <input id="numOfSenior" type="hidden" th:field="*{numOfSenior}" th:value="${orderModel.numOfSenior}">
+                            <input id="departureFlightId" type="hidden" th:field="*{departureFlightId}" th:value="${orderModel.departureFlightId}">
+                            <nav class="navbar navbar-light bg-light">
+                                <div class="row">
+                                    <div class="navbar-brand mb-0 h1 col-3">From - To : </div>
+                                    <div class="navbar-brand mb-0 h1 col-9" >
+                                        <label th:text="${departureAirport?.name + ' (' + departureAirport?.location + ') - '
+                                               + arrivalAirport?.name + ' (' + arrivalAirport?.location + ')'}"></label>
+                                    </div >
                                 </div>
-                            </div>
-                        </nav>
-                        <div th:switch="${departureFlightList.size()}" class="container my-5">
-                            <div class="col-md-20" >
-                                <h2 th:case="0">No flights found !!</h2>
-                                <div th:case="*" >
-                                    <div th:each="flight: ${departureFlightList}">
-                                        <div class="list-item">
-                                            <div class="row">
-                                                <div class="col-4"><img class="flight-image rounded " src="https://cdn.itviec.com/employers/faber-vietnam-company/logo/social/eTSLU6h2rNHHywBXw8C8253i/faber-vietnam-company-logo.png"> 
-                                                    Faber Airline
-                                                </div>
-                                                <div class="col-2 highlight-text" th:text="${flight.flightCode}">
-                                                </div>
-                                                <div class="col-3 highlight-text"  th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'hh:mm')
-                                                     +' - '+ #dates.format(new java.util.Date (flight.arrivalDatetime),'hh:mm')}">
-                                                </div>
-                                                <div style='text-align: right' class="col-3">
-                                                    <label class='price' th:text="${flight.price}"></label>
-                                                    <div>
-                                                        <button class='btn btn-outline-primary '>Choose ticket</button>
+                                <div class="row">
+                                    <div class="navbar-brand mb-0 h1 col-3">Date of Departure : </div>
+                                    <div class="navbar-brand mb-0 h1 col-9">
+                                        <label th:text="${#dates.format(new java.util.Date(orderModel.departureDate),'MMM-dd-yyyy')}"></label>
+                                    </div>
+                                </div>
+                            </nav>
+                            <div th:switch="${departureFlightList.size()}" class="container my-5">
+                                <div class="col-md-20" >
+                                    <h2 th:case="0">No flights found !!</h2>
+                                    <div th:case="*" >
+                                        <div th:each="flight: ${departureFlightList}">
+                                            <div class="list-item">
+                                                <div class="row">
+                                                    <div class="col-4"><img class="flight-image rounded " src="https://cdn.itviec.com/employers/faber-vietnam-company/logo/social/eTSLU6h2rNHHywBXw8C8253i/faber-vietnam-company-logo.png"> 
+                                                        Faber Airline
                                                     </div>
+                                                    <div class="col-2 highlight-text" th:text="${flight.flightCode}">
+                                                    </div>
+                                                    <div class="col-3 highlight-text"  th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'HH:mm')
+                                                         +' - '+ #dates.format(new java.util.Date (flight.arrivalDatetime),'HH:mm')}">
+                                                    </div>
+                                                    <div style='text-align: right' class="col-3">
+                                                        <label class='price' th:text="${flight.price}"></label>
+                                                        <div>
+                                                            <button type='button' class='btn btn-outline-primary departure-flight' th:value='${flight.id}'>Choose ticket</button>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
 
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div th:switch="${orderModel.returnType}">
-                            <!-- none display for one way type-->
-                            <div th:case="false"></div>
-                            <!-- display for return Type-->
-                            <div th:case="true">
-                                <nav class="navbar navbar-light bg-light">
-                                    <div class="row">
-                                        <div class="navbar-brand mb-0 h1 col-3">From - To : </div>
-                                        <div class="navbar-brand mb-0 h1 col-9" >
-                                            <label th:text="${arrivalAirport?.name + ' (' + arrivalAirport?.location + ') - '
-                                                   + departureAirport?.name + ' (' + departureAirport?.location + ')'}"></label>
-                                        </div >
-                                    </div>
-                                    <div class="row">
-                                        <div class="navbar-brand mb-0 h1 col-3">Date of Departure : </div>
-                                        <div class="navbar-brand mb-0 h1 col-9">
-                                            <label th:text="${#dates.format(new java.util.Date(orderModel.returnDate),'MMM-dd-yyyy')}"></label>
+                            <div th:switch="${orderModel.returnType}">
+                                <!-- none display for one way type-->
+                                <div th:case="false"></div>
+                                <!-- display for return Type-->
+                                <div th:case="true">
+                                    <input id="returnFlightId" type="hidden" th:field="*{returnFlightId}" th:value="${orderModel.returnFlightId}">
+                                    <nav class="navbar navbar-light bg-light">
+                                        <div class="row">
+                                            <div class="navbar-brand mb-0 h1 col-3">From - To : </div>
+                                            <div class="navbar-brand mb-0 h1 col-9" >
+                                                <label th:text="${arrivalAirport?.name + ' (' + arrivalAirport?.location + ') - '
+                                                       + departureAirport?.name + ' (' + departureAirport?.location + ')'}"></label>
+                                            </div >
                                         </div>
-                                    </div>
-                                </nav>
-                                <div th:switch="${returnFlightList.size()}" class="container my-5">
-                                    <div class="col-md-20" >
-                                        <h2 th:case="0">No flights found !!</h2>
-                                        <div th:case="*" >
-                                            <div th:each="flight: ${returnFlightList}">
-                                                <div class="list-item">
-                                                    <div class="row">
-                                                        <div class="col-4"><img class="flight-image rounded " src="https://cdn.itviec.com/employers/faber-vietnam-company/logo/social/eTSLU6h2rNHHywBXw8C8253i/faber-vietnam-company-logo.png"> 
-                                                            Faber Airline
-                                                        </div>
-                                                        <div class="col-2 highlight-text" th:text="${flight.flightCode}">
-                                                        </div>
-                                                        <div class="col-3 highlight-text"  th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'hh:mm')
-                                                             +' - '+ #dates.format(new java.util.Date (flight.arrivalDatetime),'hh:mm')}">
-                                                        </div>
-                                                        <div style='text-align: right' class="col-3">
-                                                            <label class='price' th:text="${flight.price}"></label>
-                                                            <div>
-                                                                <button class='btn btn-outline-primary '>Choose ticket</button>
+                                        <div class="row">
+                                            <div class="navbar-brand mb-0 h1 col-3">Date of Departure : </div>
+                                            <div class="navbar-brand mb-0 h1 col-9">
+                                                <label th:text="${#dates.format(new java.util.Date(orderModel.returnDate),'MMM-dd-yyyy')}"></label>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                    <div th:switch="${returnFlightList.size()}" class="container my-5">
+                                        <div class="col-md-20" >
+                                            <h2 th:case="0">No flights found !!</h2>
+                                            <div th:case="*" >
+                                                <div th:each="flight: ${returnFlightList}">
+                                                    <div class="list-item">
+                                                        <div class="row">
+                                                            <div class="col-4"><img class="flight-image rounded " src="https://cdn.itviec.com/employers/faber-vietnam-company/logo/social/eTSLU6h2rNHHywBXw8C8253i/faber-vietnam-company-logo.png"> 
+                                                                Faber Airline
                                                             </div>
+                                                            <div class="col-2 highlight-text" th:text="${flight.flightCode}">
+                                                            </div>
+                                                            <div class="col-3 highlight-text"  th:text="${#dates.format(new java.util.Date(flight.departureDatetime),'HH:mm')
+                                                                 +' - '+ #dates.format(new java.util.Date (flight.arrivalDatetime),'HH:mm')}">
+                                                            </div>
+                                                            <div style='text-align: right' class="col-3">
+                                                                <label class='price' th:text="${flight.price}"></label>
+                                                                <div>
+                                                                    <button type='button' class='btn btn-outline-primary return-flight' th:value='${flight.id}'>Choose ticket</button>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class='row row-spacing'>
+                                <div class="col col-12">
+                                    <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">Next step</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <!-- display for return type-->
                 </div>
             </div>
             <script>
@@ -127,6 +143,33 @@ and open the template in the editor.
                     $('.price').each(function () {
                         var price = $(this).text();
                         $(this).text(numberWithCommas(price) + ' VNĐ')
+                    })
+
+                    $('.departure-flight').on("click", function () {
+                        $(this).text("Chosen");
+                        $(this).addClass('btn-success')
+                        $(this).removeClass('btn-outline-primary')
+                        $("#departureFlightId").val($(this).val());
+                        $('.departure-flight').each(function () {
+                            if ($(this).val() != $("#departureFlightId").val()) {
+                                $(this).text("Choose ticket");
+                                $(this).removeClass('btn-success')
+                                $(this).addClass('btn-outline-primary')
+                            }
+                        })
+                    })
+                    $('.return-flight').on("click", function () {
+                        $(this).text("Chosen");
+                        $(this).addClass('btn-success')
+                        $(this).removeClass('btn-outline-primary')
+                        $("#returnFlightId").val($(this).val());
+                        $('.return-flight').each(function () {
+                            if ($(this).val() != $("#returnFlightId").val()) {
+                                $(this).text("Choose ticket");
+                                $(this).removeClass('btn-success')
+                                $(this).addClass('btn-outline-primary')
+                            }
+                        })
                     })
                 })
 

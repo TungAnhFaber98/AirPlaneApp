@@ -90,5 +90,11 @@ public class MainController {
         modelMap.addAttribute("returnFlightList", returnFlightList);
         return "flight-list";
     }
+    
+    @GetMapping(path="/flight/test")
+    public String test(@ModelAttribute("orderModel") OrderModel orderModel){
+        LOGGER.info(orderModel.getDepartureFlightId()+"");
+        return "test";
+    }
 
 }

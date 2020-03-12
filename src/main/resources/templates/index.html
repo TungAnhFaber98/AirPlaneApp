@@ -90,8 +90,8 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <div class='row row-spacing'>
-                                  <div class="col col-12">
-                                      <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">Search flight</button>
+                                <div class="col col-12">
+                                    <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">Search flight</button>
                                 </div>
                             </div>
                         </form>
@@ -115,8 +115,6 @@ and open the template in the editor.
 
                     $(document).ready(function () {
                         var today = formatDate(new Date());
-                        $('#departure_date').val(today);
-                        $('#return_date').val(today);
                         $("#departure_date").attr("min", today);
                         $("#return_date").attr("min", today);
 
