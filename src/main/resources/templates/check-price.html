@@ -51,17 +51,17 @@ and open the template in the editor.
                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                                             <div class="card-body" >
                                                 <div class='row' th:if='${orderModel.numOfAdult > 0}'>
-                                                    <span class="col-9">Adult - fee: </span>
+                                                    <span class="col-9">Adult - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +departureFlight.price}"> </span>
                                                 </div>
 
                                                 <div class='row' th:if='${orderModel.numOfChildren > 0}'>
-                                                    <span class="col-9">Children - fee: </span>
+                                                    <span class="col-9">Children - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + departureFlightPriceDiscount }"> </span>
                                                 </div>
 
                                                 <div class='row' th:if='${orderModel.numOfSenior > 0}'>
-                                                    <span class="col-9">Senior- fee: </span>
+                                                    <span class="col-9">Senior - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + departureFlightPriceDiscount }"> </span>
                                                 </div>
 
@@ -89,17 +89,17 @@ and open the template in the editor.
                                         <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion2">
                                             <div class="card-body" >
                                                 <div class='row' th:if='${orderModel.numOfAdult > 0}'>
-                                                    <span class="col-9">Adult - fee: </span>
+                                                    <span class="col-9">Adult - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +returnFlight.price}"> </span>
                                                 </div>
 
                                                 <div class='row' th:if='${orderModel.numOfChildren > 0}'>
-                                                    <span class="col-9">Children - fee: </span>
+                                                    <span class="col-9">Children - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + returnFlightPriceDiscount }"> </span>
                                                 </div>
 
                                                 <div class='row' th:if='${orderModel.numOfSenior > 0}'>
-                                                    <span class="col-9">Senior- fee: </span>
+                                                    <span class="col-9">Senior - fee </span>
                                                     <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + returnFlightPriceDiscount }"> </span>
                                                 </div>
 
