@@ -32,7 +32,7 @@ and open the template in the editor.
                             <input id="numOfSenior" type="hidden" th:field="*{numOfSenior}" th:value="${orderModel.numOfSenior}">
                             <input id="departureFlightId" type="hidden" th:field="*{departureFlightId}" th:value="${orderModel.departureFlightId}">
                             <input id="returnFlightId" type="hidden" th:field="*{returnFlightId}" th:value="${orderModel.returnFlightId}">
-                            <input id="listSeat" type="hidden" th:field="*{listSeat}" th:value="${orderModel.listSeat}">
+                            <input id="listSeatDeparture" type="hidden" th:field="*{listSeatDeparture}" th:value="${orderModel.listSeatDeparture}">
 
                             <input type="hidden" id="number-people" 
                                    th:value="${orderModel.numOfAdult+orderModel.numOfChildren
@@ -40,17 +40,17 @@ and open the template in the editor.
                             <h1>Flight Seat Selection</h1>
                             <div class="seatStructure txt-center" style="overflow-x:auto;">
                                 <div class="screen">
-                                    <h2 class="wthree col-12">Head of Airplane</h2>
+                                    <h2 class="wthree col-12">Departure FLight</h2>
                                 </div>
 
                                 <div class="row container">
                                     <span class="col-2" 
                                           style="margin-bottom: 15px"
-                                          th:each="seat:${listSeat}">
+                                          th:each="seat:${listSeatCodeDeparture}">
                                         <th:block th:if="${seat.status ==0}">
                                             <input type="button" 
                                                    style="min-width: 60px;"
-                                                   class="btn btn-light seat" 
+                                                   class="btn btn-light seat-departure" 
                                                    th:value="${seat.seatCode}">
                                         </th:block>
                                         <th:block th:unless="${seat.status == 0}">
@@ -80,7 +80,7 @@ and open the template in the editor.
             <script>
                 $(document).ready(function () {
                     var limit = $("#number-people").val();
-                    $('.seat').on("click", function () {
+                    $('.seat-departure').on("click", function () {
                         if ($(this).hasClass('choose-seat-departure')) {
                             $(this).removeClass('choose-seat-departure');
                             $(this).addClass('btn-light');
@@ -107,7 +107,7 @@ and open the template in the editor.
                             $('.choose-seat-departure').each(function () {
                                 arr.push($(this).val());
                             })
-                            $("#listSeat").val(arr);
+                            $("#listSeatDeparture").val(arr);
                         }
                     })
                 })

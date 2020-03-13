@@ -151,27 +151,38 @@ public class MainController {
     @GetMapping(path = "/flight/chooseSeat")
     public String chooseSeat(@ModelAttribute("orderModel") OrderModel orderModel,
             Model model) throws RecordNotFoundException {
-
+        
+        // get list seat automatically
         ArrayList<String> listSeatCode = new UtilHelper().generate150SeatCode();
-        ArrayList<String> listOrderedSeatCode = (ArrayList<String>) ticketService.findByFlightId(15);
-        ArrayList<Seat> listSeatCodeWithStatus = new ArrayList<>();
+        
+        // get list of previous ordered tickets by other in departure Flight
+        ArrayList<String> listOrderedSeatCodeDeparture = 
+                (ArrayList<String>) ticketService.findByFlightId(orderModel.getDepartureFlightId());
+        
+        // create list seat code to display and choose for departure
+        ArrayList<Seat> listSeatCodeDeparture = new ArrayList<>();
+        
+        // check if seat code is available for departure flight
         for (int i = 0; i < listSeatCode.size(); i++) {
-            if (listOrderedSeatCode.contains(listSeatCode.get(i))) {
-                listSeatCodeWithStatus.add(new Seat(listSeatCode.get(i), ConstantVariables.seatNotAvailabe));
+            if (listOrderedSeatCodeDeparture.contains(listSeatCode.get(i))) {
+                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatNotAvailabe));
             } else {
-                listSeatCodeWithStatus.add(new Seat(listSeatCode.get(i), ConstantVariables.seatAvailable));
+                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatAvailable));
             }
         }
-        model.addAttribute("listSeat",listSeatCodeWithStatus);
-        String[] bkb = new String[3];
-        orderModel.setListSeat(bkb);
+        // add to model to display seat to choose for departure flight
+        model.addAttribute("listSeatCodeDeparture",listSeatCodeDeparture);
+        
+        // this is array for storing in orderModel of chosen tickets
+        ArrayList<String> departureSeatCode = new ArrayList<>();
+        orderModel.setListSeatDeparture(departureSeatCode);
         model.addAttribute("orderModel", orderModel);
         return "choose-seat";
     }
 
     @GetMapping(path = "/flight/customerName")
     public String customerName(@ModelAttribute("orderModel") OrderModel orderModel) {
-        LOGGER.info(orderModel.getListSeat().length+"");
+        LOGGER.info(orderModel.getListSeatDeparture().size()+"");
         return "customer-name";
     }
 

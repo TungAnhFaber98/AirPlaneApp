@@ -25,7 +25,7 @@ public class OrderModel {
     private int numOfSenior;
     private int departureFlightId;
     private int returnFlightId;
-    private String listSeat [];
+    private ArrayList<String> listSeatDeparture;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
@@ -128,13 +128,15 @@ public class OrderModel {
         this.returnFlightId = returnFlightId;
     }
 
-    public String[] getListSeat() {
-        return listSeat;
+    public ArrayList<String> getListSeatDeparture() {
+        return listSeatDeparture;
     }
 
-    public void setListSeat(String[] listSeat) {
-        this.listSeat = listSeat;
+    public void setListSeatDeparture(ArrayList<String> listSeatDeparture) {
+        this.listSeatDeparture = listSeatDeparture;
     }
+
+   
 
     
     

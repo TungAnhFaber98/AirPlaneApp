@@ -60,6 +60,7 @@ CREATE TABLE `customer_type` (
 
 LOCK TABLES `customer_type` WRITE;
 /*!40000 ALTER TABLE `customer_type` DISABLE KEYS */;
+INSERT INTO `customer_type` VALUES (1,'adult'),(2,'children'),(3,'senior');
 /*!40000 ALTER TABLE `customer_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,42 +95,43 @@ INSERT INTO `flight` VALUES (1,'VN100',14,2,'2020-03-04 17:30:00','2020-03-04 17
 UNLOCK TABLES;
 
 --
--- Table structure for table `order`
+-- Table structure for table `order_flight`
 --
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `order_flight`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order` (
+CREATE TABLE `order_flight` (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_time` datetime DEFAULT NULL,
-  `return_type` bit(1) DEFAULT NULL,
+  `return_type` int DEFAULT NULL,
   `reserve_code` varchar(10) DEFAULT NULL,
-  `representative_name` varchar(45) DEFAULT NULL,
+  `representative_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `phone` varchar(12) DEFAULT NULL,
   `total_price` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order`
+-- Dumping data for table `order_flight`
 --
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+LOCK TABLES `order_flight` WRITE;
+/*!40000 ALTER TABLE `order_flight` DISABLE KEYS */;
+INSERT INTO `order_flight` VALUES (1,'2020-03-04 17:30:00',0,'434333','pham tung anh','phamtunganh98@gmail.com','03232922',40000000),(2,'2020-03-04 17:30:00',1,'432111','pham tuan anh','phamtauasn@gmail.com','03232112',5000000);
+/*!40000 ALTER TABLE `order_flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `order_item`
+-- Table structure for table `ticket`
 --
 
-DROP TABLE IF EXISTS `order_item`;
+DROP TABLE IF EXISTS `ticket`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `order_item` (
+CREATE TABLE `ticket` (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_id` int DEFAULT NULL,
   `flight_id` int DEFAULT NULL,
@@ -138,16 +140,17 @@ CREATE TABLE `order_item` (
   `seat_number` varchar(10) DEFAULT NULL,
   `price` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `order_item`
+-- Dumping data for table `ticket`
 --
 
-LOCK TABLES `order_item` WRITE;
-/*!40000 ALTER TABLE `order_item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
+LOCK TABLES `ticket` WRITE;
+/*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+INSERT INTO `ticket` VALUES (1,1,15,'Pham Tung Anh',1,'1A',2000000),(2,1,15,'Duy Cuong',1,'1C',200000);
+/*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -159,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-12 17:46:17
+-- Dump completed on 2020-03-13  7:32:25
