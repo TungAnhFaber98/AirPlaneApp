@@ -25,7 +25,7 @@ and open the template in the editor.
                         <div class="row row-spacing" ><h5 class="card-title col">Hello 
                                 <span  th:text="${session.user} ?: 'customer'"></span> - Choose your flight</h5></div>
                         <form action="#" th:action="@{/flight/search}" th:object="${orderModel}"
-                              method="post" id='form-flight-search'>
+                              method="get" id='form-flight-search'>
                             <div class="row row-spacing">
                                 <div class="col col-2">
                                     <select class="form-control" th:field="*{returnType}" id="return_type">

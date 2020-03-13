@@ -33,6 +33,7 @@ and open the template in the editor.
                             <input id="departureFlightId" type="hidden" th:field="*{departureFlightId}" th:value="${orderModel.departureFlightId}">
                             <input id="returnFlightId" type="hidden" th:field="*{returnFlightId}" th:value="${orderModel.returnFlightId}">
                             <input id="listSeatDeparture" type="hidden" th:field="*{listSeatDeparture}" th:value="${orderModel.listSeatDeparture}">
+                            <input id="listSeatReturn" type="hidden" th:field="*{listSeatReturn}" th:value="${orderModel.listSeatReturn}">
 
                             <input type="hidden" id="number-people" 
                                    th:value="${orderModel.numOfAdult+orderModel.numOfChildren
@@ -60,12 +61,36 @@ and open the template in the editor.
                                                    th:value="${seat.seatCode}">
                                         </th:block>
                                     </span>
-                                </div>                                   
-
-                                <div class="screen">
-                                    <h2 class="wthree">Tail of Airplane</h2>
-                                </div>
+                                </div>                                                              
                             </div>
+
+                            <th:block th:if="${orderModel.returnType}">
+                                <div class="seatStructure txt-center" style="overflow-x:auto;">
+                                    <div class="screen">
+                                        <h2 class="wthree col-12">Return FLight</h2>
+                                    </div>
+
+                                    <div class="row container">
+                                        <span class="col-2" 
+                                              style="margin-bottom: 15px"
+                                              th:each="seat:${listSeatCodeReturn}">
+                                            <th:block th:if="${seat.status ==0}">
+                                                <input type="button" 
+                                                       style="min-width: 60px;"
+                                                       class="btn btn-light seat-return" 
+                                                       th:value="${seat.seatCode}">
+                                            </th:block>
+                                            <th:block th:unless="${seat.status == 0}">
+                                                <input type="button" 
+                                                       style="min-width: 60px;"
+                                                       class="btn btn-danger" 
+                                                       th:value="${seat.seatCode}">
+                                            </th:block>
+                                        </span>
+                                    </div>                                   
+
+                                </div>
+                            </th:block>
                             <div class='row row-spacing'>
                                 <div class="col col-12">
                                     <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">
@@ -91,23 +116,51 @@ and open the template in the editor.
                             $(this).addClass('choose-seat-departure');
                             $(this).removeClass('btn-light');
                         } else {
-                            alert("You have chosen enough");
+                            alert("You have chosen enough for departure flight");
+                        }
+
+                    })
+
+                    $('.seat-return').on("click", function () {
+                        if ($(this).hasClass('choose-seat-return')) {
+                            $(this).removeClass('choose-seat-return');
+                            $(this).addClass('btn-light');
+                            return;
+                        }
+                        var numChosen = $('.choose-seat-return').length;
+                        if (numChosen < limit) {
+                            $(this).addClass('choose-seat-return');
+                            $(this).removeClass('btn-light');
+                        } else {
+                            alert("You have chosen enough for return flight");
                         }
 
                     })
 
                     $("#choose-flight-form").on("submit", function (e) {
-                        var numChosen = $('.choose-seat-departure').length;
-                        if (numChosen < limit) {
-                            alert("Please choose up to " + limit + " seat(s)");
+                        var isReturnType = $('#returnType').val();
+                        var numDepartureChosen = $('.choose-seat-departure').length;
+                        var numReturnChosen = $('.choose-seat-return').length;
+                        if (numDepartureChosen < limit) {
+                            alert("Please choose up to " + limit + " seat(s) for departure flight");
+                            e.preventDefault();
+                            return;
+                        } else if (isReturnType=='true' && (numReturnChosen < limit)) {
+                            alert("Please choose up to " + limit + " seat(s) for return flight");
                             e.preventDefault();
                             return;
                         } else {
-                            var arr = [];
+                            var arrDeparture = [];
+                            var arrReturn = [];
                             $('.choose-seat-departure').each(function () {
-                                arr.push($(this).val());
+                                arrDeparture.push($(this).val());
                             })
-                            $("#listSeatDeparture").val(arr);
+                            $("#listSeatDeparture").val(arrDeparture);
+                            
+                            $('.choose-seat-return').each(function () {
+                                arrReturn.push($(this).val());
+                            })
+                            $("#listSeatReturn").val(arrReturn);
                         }
                     })
                 })

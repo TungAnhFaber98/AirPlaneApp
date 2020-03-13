@@ -26,7 +26,16 @@ public class OrderModel {
     private int departureFlightId;
     private int returnFlightId;
     private ArrayList<String> listSeatDeparture;
-
+    private ArrayList<String> listSeatReturn;
+    private ArrayList<String> adultList;
+    private ArrayList<String> childrenList;
+    private ArrayList<String> seniorList;
+    private String representativeName;
+    private String email;
+    private String phone;
+        
+    
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date departureDate;
 
@@ -136,9 +145,62 @@ public class OrderModel {
         this.listSeatDeparture = listSeatDeparture;
     }
 
-   
+    public ArrayList<String> getAdultList() {
+        return adultList;
+    }
 
-    
+    public void setAdultList(ArrayList<String> adultList) {
+        this.adultList = adultList;
+    }
+
+    public ArrayList<String> getChildrenList() {
+        return childrenList;
+    }
+
+    public void setChildrenList(ArrayList<String> childrenList) {
+        this.childrenList = childrenList;
+    }
+
+    public ArrayList<String> getSeniorList() {
+        return seniorList;
+    }
+
+    public void setSeniorList(ArrayList<String> seniorList) {
+        this.seniorList = seniorList;
+    }
+
+    public String getRepresentativeName() {
+        return representativeName;
+    }
+
+    public void setRepresentativeName(String representativeName) {
+        this.representativeName = representativeName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email= email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public ArrayList<String> getListSeatReturn() {
+        return listSeatReturn;
+    }
+
+    public void setListSeatReturn(ArrayList<String> listSeatReturn) {
+        this.listSeatReturn = listSeatReturn;
+    }
+       
     
     public String toString() {
         return "Departure Airport: " + departureAirportId

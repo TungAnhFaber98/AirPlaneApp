@@ -537,7 +537,7 @@ input[type=checkbox]:checked:before {
 
 @media(max-width:600px) {
     .w3ls-reg {
-       width: 500px;
+        width: 500px;
     }
 }
 
@@ -554,7 +554,7 @@ input[type=checkbox]:checked:before {
 
 @media(max-width:480px) {
     .w3ls-reg {
-       width: 450px;
+        width: 450px;
     }
     h1 {
         font-size: 2.5em;
@@ -574,8 +574,8 @@ input[type=checkbox]:checked:before {
     h1 {
         font-size: 2em;
     }
-   .w3ls-reg {
-       width: 370px;
+    .w3ls-reg {
+        width: 370px;
     }
     input[type="text"],
     input[type="number"] {
@@ -592,7 +592,7 @@ input[type=checkbox]:checked:before {
         font-size: 1.9em;
     }
     .w3ls-reg {
-       width: 350px;
+        width: 350px;
     }
     h2.wthree {
         padding: 0.5em;
@@ -604,7 +604,7 @@ input[type=checkbox]:checked:before {
         font-size: 1.5em;
     }
     .w3ls-reg {
-       width: 280px;
+        width: 280px;
     }
     input[type="text"], input[type="number"] {
         width: 88%;
@@ -625,5 +625,8 @@ input[type=checkbox]:checked:before {
 
 /*important to choose seat, without this class, jquery will die*/
 .choose-seat-departure{
+    background-color: #28a745;
+}
+.choose-seat-return{
     background-color: #28a745;
 }

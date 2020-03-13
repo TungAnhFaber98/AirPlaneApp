@@ -87,6 +87,13 @@ th {
     margin-top: 20px;
 }
 
+.total-value{
+    text-align: left;
+    font-weight: bold;
+    color:black;
+    font-size: 30px;
+}
+
 .list-item{
     padding: 10px 10px 5px 10px;
     border: 1px solid #c8c8c8;
@@ -111,8 +118,14 @@ th {
     font-size: 20px;
 }
 .price{
-    color:red;
-    font-size: 25px
+    color:#D45D43;
+    font-size: 25px;
+    font-weight: 400;
+}
+.price-order-summary{
+    color:#f8f9fa;
+    font-size: 25px;
+    font-weight: 400;
 }
 
 .medium-label{
@@ -125,3 +138,6 @@ th {
     margin-top:15px;
 }
 
+.required-input{
+    border: 1px solid  red;
+}

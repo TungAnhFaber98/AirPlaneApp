@@ -32,7 +32,7 @@ and open the template in the editor.
                             <input id="departureFlightId" type="hidden" th:field="*{departureFlightId}" th:value="${orderModel.departureFlightId}">
                             <input id="returnFlightId" type="hidden" th:field="*{returnFlightId}" th:value="${orderModel.returnFlightId}">
                             <div class='row'>
-                                <h1 class='col-12'>Price Summary</h1>
+                                <h2 class='col-12'>Price Summary</h2>
                             </div>
                             <div style='border: 1px black;margin-top: 20px'>
 
@@ -70,45 +70,60 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div th:if='${orderModel.returnType}'>
                                 <div style='border: 1px black;margin-top: 20px'>
 
-                                <div id="accordion2">
-                                    <div class="card price-collapse">
-                                        <div class="card-header" id="headingTwo">
-                                            <h5 class="mb-0 row">
-                                                <input type="button" class="btn btn-link col-9" style='text-align: left' data-toggle="collapse" 
-                                                       data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"
-                                                       th:value="${arrivalAirport.name +' (' + arrivalAirport.location 
-                                                       + ')  --> ' + departureAirport.name +' (' +departureAirport.location + ')'}">    
-                                                <div class='col-3 price' th:text='${returnTotalPrice}'></div>
-                                            </h5>
-                                        </div>
+                                    <div id="accordion2">
+                                        <div class="card price-collapse">
+                                            <div class="card-header" id="headingTwo">
+                                                <h5 class="mb-0 row">
+                                                    <input type="button" class="btn btn-link col-9" style='text-align: left' data-toggle="collapse" 
+                                                           data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"
+                                                           th:value="${arrivalAirport.name +' (' + arrivalAirport.location 
+                                                           + ')  --> ' + departureAirport.name +' (' +departureAirport.location + ')'}">    
+                                                    <div class='col-3 price' th:text='${returnTotalPrice}'></div>
+                                                </h5>
+                                            </div>
 
-                                        <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion2">
-                                            <div class="card-body" >
-                                                <div class='row' th:if='${orderModel.numOfAdult > 0}'>
-                                                    <span class="col-9">Adult - fee </span>
-                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +returnFlight.price}"> </span>
+                                            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion2">
+                                                <div class="card-body" >
+                                                    <div class='row' th:if='${orderModel.numOfAdult > 0}'>
+                                                        <span class="col-9">Adult - fee </span>
+                                                        <span class="col-3 sub-price" th:text="${orderModel.numOfAdult + ' x ' +returnFlight.price}"> </span>
+                                                    </div>
+
+                                                    <div class='row' th:if='${orderModel.numOfChildren > 0}'>
+                                                        <span class="col-9">Children - fee </span>
+                                                        <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + returnFlightPriceDiscount }"> </span>
+                                                    </div>
+
+                                                    <div class='row' th:if='${orderModel.numOfSenior > 0}'>
+                                                        <span class="col-9">Senior - fee </span>
+                                                        <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + returnFlightPriceDiscount }"> </span>
+                                                    </div>
                                                 </div>
-
-                                                <div class='row' th:if='${orderModel.numOfChildren > 0}'>
-                                                    <span class="col-9">Children - fee </span>
-                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfChildren + ' x ' + returnFlightPriceDiscount }"> </span>
-                                                </div>
-
-                                                <div class='row' th:if='${orderModel.numOfSenior > 0}'>
-                                                    <span class="col-9">Senior - fee </span>
-                                                    <span class="col-3 sub-price" th:text="${orderModel.numOfSenior + ' x ' + returnFlightPriceDiscount }"> </span>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
+
+                            <div style='border: 1px black;margin-top: 20px'>
+
+                                <div id="accordion3">
+                                    <div class="card price-collapse">
+                                        <div class="card-header">
+                                            <h5 class="mb-0 row">
+                                                <input type="button" disabled="disabled" class="btn btn-link col-9 total-value" value="Total Sum">    
+                                                <div class='col-3 price' th:text='${totalPrice}'></div>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class='row row-spacing'>
                                 <div class="col col-12">
                                     <button class="btn btn-primary form-control btn-search-flight col-4"  type="submit">
@@ -122,6 +137,8 @@ and open the template in the editor.
             </div>
             <script>
                 $(document).ready(function () {
+                    
+                    
                     $('.price').each(function () {
                         var price = $(this).text();
                         $(this).text(numberWithCommas(price) + ' VNĐ')
@@ -132,5 +149,6 @@ and open the template in the editor.
                     })
                 })
             </script>
+        </div>
     </body>
 </html>

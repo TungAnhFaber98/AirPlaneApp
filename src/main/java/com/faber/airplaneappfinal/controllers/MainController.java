@@ -76,7 +76,7 @@ public class MainController {
     }
 
     // handle submit from customer search page
-    @PostMapping(path = "/flight/search")
+    @GetMapping(path = "/flight/search")
     public String searchFlight(
             @ModelAttribute("orderModel") OrderModel orderModel,
             Model model) {
@@ -97,11 +97,12 @@ public class MainController {
             returnFlightList = (ArrayList<Flight>) flightService.findFlightListForCustomerReturn(orderModel);
         }
 
-        model.addAttribute("orderModel", orderModel);
+//        model.addAttribute("orderModel", orderModel);
         model.addAttribute("departureAirport", departureAirport);
         model.addAttribute("arrivalAirport", arrivalAirport);
         model.addAttribute("departureFlightList", departureFlightList);
         model.addAttribute("returnFlightList", returnFlightList);
+        model.addAttribute("orderModel", orderModel);
         return "flight-list";
     }
 
@@ -124,6 +125,108 @@ public class MainController {
         model.addAttribute("departureFlightPriceDiscount", departureFlightPriceDiscount);
         // add departure flight order object and its total price
         model.addAttribute("departureTotalPrice", departureTotalPrice);
+        model.addAttribute("totalPrice", departureTotalPrice);
+        // if customer order return type
+        if (orderModel.isReturnType()) {
+            Flight returnFlight = flightService.getFlightById(orderModel.getReturnFlightId());
+
+            // calculate total price of return flight order
+            int returnFlightPrice = returnFlight.getPrice();
+            int returnFlightPriceDiscount = new UtilHelper().calculateDiscountPrice(returnFlightPrice, ConstantVariables.feeDiscount);
+            int returnTotalPrice = returnFlightPrice * orderModel.getNumOfAdult() + returnFlightPriceDiscount * orderModel.getNumOfChildren()
+                    + returnFlightPriceDiscount * orderModel.getNumOfSenior();
+
+            // add return flight discount price
+            model.addAttribute("returnFlightPriceDiscount", returnFlightPriceDiscount);
+            // add return flight order object and its total price
+            model.addAttribute("returnFlight", returnFlight);
+            model.addAttribute("returnTotalPrice", returnTotalPrice);
+            model.addAttribute("totalPrice", departureTotalPrice + returnTotalPrice);
+        }
+
+        model.addAttribute("departureAirport", departureAirport);
+        model.addAttribute("arrivalAirport", arrivalAirport);
+        model.addAttribute("departureFlight", departureFlight);
+        model.addAttribute("orderModel", orderModel);
+        return "check-price";
+    }
+
+    // get to choose seat page
+    @GetMapping(path = "/flight/chooseSeat")
+    public String chooseSeat(@ModelAttribute("orderModel") OrderModel orderModel,
+            Model model) throws RecordNotFoundException {
+
+        // get list seat automatically
+        ArrayList<String> listSeatCode = new UtilHelper().generate150SeatCode();
+
+        // get list of previous ordered tickets by other in departure Flight
+        ArrayList<String> listOrderedSeatCodeDeparture
+                = (ArrayList<String>) ticketService.findByFlightId(orderModel.getDepartureFlightId());
+
+        // create list seat code to display and choose for departure
+        ArrayList<Seat> listSeatCodeDeparture = new ArrayList<>();
+
+        // check if seat code is available for departure flight
+        for (int i = 0; i < listSeatCode.size(); i++) {
+            if (listOrderedSeatCodeDeparture.contains(listSeatCode.get(i))) {
+                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatNotAvailabe));
+            } else {
+                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatAvailable));
+            }
+        }
+        // add to model to display seat to choose for departure flight
+        model.addAttribute("listSeatCodeDeparture", listSeatCodeDeparture);
+
+        // find seat code for return type if it is return type
+        if (orderModel.isReturnType()) {
+            ArrayList<String> listOrderedSeatCodeReturn
+                    = (ArrayList<String>) ticketService.findByFlightId(orderModel.getReturnFlightId());
+            ArrayList<Seat> listSeatCodeReturn = new ArrayList<>();
+
+            // check if seat code is available for departure flight
+            for (int i = 0; i < listSeatCode.size(); i++) {
+                if (listOrderedSeatCodeReturn.contains(listSeatCode.get(i))) {
+                    listSeatCodeReturn.add(new Seat(listSeatCode.get(i), ConstantVariables.seatNotAvailabe));
+                } else {
+                    listSeatCodeReturn.add(new Seat(listSeatCode.get(i), ConstantVariables.seatAvailable));
+                }
+            }
+            // add to model to display seat to choose for departure flight
+            model.addAttribute("listSeatCodeReturn", listSeatCodeReturn);
+        }
+
+        // this is array for storing in orderModel of chosen tickets
+//        ArrayList<String> departureSeatCode = new ArrayList<>();
+//        orderModel.setListSeatDeparture(departureSeatCode);
+        model.addAttribute("orderModel", orderModel);
+        return "choose-seat";
+    }
+
+    // get to page for registering name for flight
+    @GetMapping(path = "/flight/customerName")
+    public String customerName(@ModelAttribute("orderModel") OrderModel orderModel, Model model) {
+        model.addAttribute("orderModel", orderModel);
+        return "customer-name";
+    }
+
+    @GetMapping(path = "/flight/order/summary")
+    public String completeOrder(@ModelAttribute("orderModel") OrderModel orderModel, Model model) throws RecordNotFoundException {
+
+        Flight departureFlight = flightService.getFlightById(orderModel.getDepartureFlightId());
+        Airport departureAirport = airportService.getAirportById(orderModel.getDepartureAirportId());
+        Airport arrivalAirport = airportService.getAirportById(orderModel.getArrivalAirportId());
+
+        // calculate total price of departure flight order
+        int departFlightPrice = departureFlight.getPrice();
+        int departureFlightPriceDiscount = new UtilHelper().calculateDiscountPrice(departFlightPrice, ConstantVariables.feeDiscount);
+        int departureTotalPrice = departFlightPrice * orderModel.getNumOfAdult() + orderModel.getNumOfChildren() * departureFlightPriceDiscount
+                + departureFlightPriceDiscount * orderModel.getNumOfSenior();
+
+        // add departure flight discount price
+        model.addAttribute("departureFlightPriceDiscount", departureFlightPriceDiscount);
+        // add departure flight order object and its total price
+        model.addAttribute("departureTotalPrice", departureTotalPrice);
+        model.addAttribute("totalPrice", departureTotalPrice);
 
         // if customer order return type
         if (orderModel.isReturnType()) {
@@ -140,50 +243,16 @@ public class MainController {
             // add return flight order object and its total price
             model.addAttribute("returnFlight", returnFlight);
             model.addAttribute("returnTotalPrice", returnTotalPrice);
+            model.addAttribute("totalPrice", departureTotalPrice + returnTotalPrice);
+            
+            model.addAttribute("returnFlight",returnFlight);
         }
 
+        model.addAttribute("departureFlight", departureFlight);
         model.addAttribute("departureAirport", departureAirport);
         model.addAttribute("arrivalAirport", arrivalAirport);
         model.addAttribute("departureFlight", departureFlight);
-        return "check-price";
-    }
-
-    @GetMapping(path = "/flight/chooseSeat")
-    public String chooseSeat(@ModelAttribute("orderModel") OrderModel orderModel,
-            Model model) throws RecordNotFoundException {
-        
-        // get list seat automatically
-        ArrayList<String> listSeatCode = new UtilHelper().generate150SeatCode();
-        
-        // get list of previous ordered tickets by other in departure Flight
-        ArrayList<String> listOrderedSeatCodeDeparture = 
-                (ArrayList<String>) ticketService.findByFlightId(orderModel.getDepartureFlightId());
-        
-        // create list seat code to display and choose for departure
-        ArrayList<Seat> listSeatCodeDeparture = new ArrayList<>();
-        
-        // check if seat code is available for departure flight
-        for (int i = 0; i < listSeatCode.size(); i++) {
-            if (listOrderedSeatCodeDeparture.contains(listSeatCode.get(i))) {
-                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatNotAvailabe));
-            } else {
-                listSeatCodeDeparture.add(new Seat(listSeatCode.get(i), ConstantVariables.seatAvailable));
-            }
-        }
-        // add to model to display seat to choose for departure flight
-        model.addAttribute("listSeatCodeDeparture",listSeatCodeDeparture);
-        
-        // this is array for storing in orderModel of chosen tickets
-        ArrayList<String> departureSeatCode = new ArrayList<>();
-        orderModel.setListSeatDeparture(departureSeatCode);
         model.addAttribute("orderModel", orderModel);
-        return "choose-seat";
+        return "order-summary";
     }
-
-    @GetMapping(path = "/flight/customerName")
-    public String customerName(@ModelAttribute("orderModel") OrderModel orderModel) {
-        LOGGER.info(orderModel.getListSeatDeparture().size()+"");
-        return "customer-name";
-    }
-
 }
